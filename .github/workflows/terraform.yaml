@@ -1,7 +1,17 @@
 name: Terraform CI
 
 on:
-  workflow_dispatch:   # Manual trigger from GitHub Actions interface
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Choose the action to perform'
+        required: true
+        default: 'apply'
+        type: choice
+        options:
+          - plan
+          - apply
+          - destroy
 
 jobs:
   terraform:
@@ -32,13 +42,16 @@ jobs:
       working-directory: terraform  # Specify the working directory for Terraform
 
     - name: Terraform Plan
+      if: ${{ github.event.inputs.action == 'plan' }}
       run: terraform plan
       working-directory: terraform  # Specify the working directory for Terraform
 
     - name: Terraform Apply  
+      if: ${{ github.event.inputs.action == 'apply' }}
       run: terraform apply -auto-approve
       working-directory: terraform  # Specify the working directory for Terraform
 
     - name: Terraform Destroy
+      if: ${{ github.event.inputs.action == 'destroy' }}
       run: terraform destroy -auto-approve
       working-directory: terraform  # Specify the working directory for Terraform
