@@ -5,15 +5,18 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: myapp
-  namespace: 6-k8s
+  namespace: 7-k8s
   annotations:
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:us-east-2:058264104430:certificate/4ed8372a-fe9e-4b35-9d3b-6c0f8ddd663e
+    alb.ingress.kubernetes.io/listen-ports: '[{"HTTP": 80}, {"HTTPS":443}]'
+    alb.ingress.kubernetes.io/ssl-redirect: "443"
     alb.ingress.kubernetes.io/scheme: internet-facing
     alb.ingress.kubernetes.io/target-type: ip
     alb.ingress.kubernetes.io/healthcheck-path: /health
 spec:
   ingressClassName: alb
   rules:
-    - host: ex6.yunus.in
+    - host: ex7.yunus.in
       http:
         paths:
           - path: /
